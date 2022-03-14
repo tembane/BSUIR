@@ -1,6 +1,4 @@
 package com.example.laba.controller;
-
-import com.example.laba.entities.Prediction;
 import java.util.Random;
 
 import com.example.laba.exceptions.ServiceException;
@@ -11,33 +9,45 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 
 public class PredictionController {
-    @GetMapping("/guessing")
-    public Prediction guessing(@RequestParam(value = "Prediction", defaultValue = "0") String numb) {
-        int number = 0;
+
+    int tmp_number;
+
+    public int getTmp_number() {
+        return tmp_number;
+    }
+
+    public void setTmp_number(int tmp_number) {
+        this.tmp_number = tmp_number;
+    }
+
+    @GetMapping("/prediction")
+    public String prediction(@RequestParam(value = "number", defaultValue = "0") String numb) {
+        int number;
+        String answer;
+
         if (numb.matches("[-+]?\\d+")){
             number = Integer.parseInt(numb);
-
-            if(number < 0 || number > 10){
-                throw new ServiceException("Wrong value");
+            this.tmp_number = number;
+            if(number < 0){
+                throw new ServiceException("Wrong value. Enter positive number, not a negative one!");
+            }
+            if(number > 10){
+                throw new ServiceException("Wrong value. Enter number less 10!");
             }
         } else {
-            throw new ServiceException("Wrong value");
+            throw new ServiceException("Wrong value. Enter integer, not a string!");
         }
 
-        Prediction prediction = new Prediction();
         int random_number;
         int max = 10;
         Random random = new Random();
         random_number = random.nextInt(max);
         if (number < random_number)
-            prediction.setPrediction("Ваше число меньше чем: " + random_number);
+            answer = "Ваше число меньше чем: " + random_number;
         else if (number > random_number)
-            prediction.setPrediction("Ваше число больше чем: " + random_number);
+            answer = "Ваше число больше чем: " + random_number;
         else
-            prediction.setPrediction("Вы угадали число: " + random_number);
-        return prediction;
-    }
-    public String getPrediction(){
-        return "Вы угадали число: 4";
+            answer = "Вы угадали число!";
+        return answer;
     }
 }

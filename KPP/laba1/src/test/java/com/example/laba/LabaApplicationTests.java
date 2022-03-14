@@ -10,9 +10,9 @@ class LabaApplicationTests {
     private final PredictionController predictionController = new PredictionController();
     @Test
     void testPredictionNumbers(){
-        predictionController.guessing("4");
-        String result = predictionController.getPrediction();
-        String expected = "Вы угадали число: 4";
+        predictionController.prediction("4");
+        int result = predictionController.getTmp_number();
+        int expected = 4;
         assertEquals(expected, result);
     }
 
