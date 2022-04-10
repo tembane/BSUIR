@@ -38,10 +38,6 @@ public class Solution {
 
             return;
         }
-
-        // If not found
-
-
         if (parameters.getEnteredValue() == parameters.getRandomValue()){
             temp = 1;
         } else{
@@ -55,11 +51,9 @@ public class Solution {
     public Integer getNumb(){
         return random_number;
     }
-
     public Integer getRoot() {
         return root;
     }
-
     public void setRoot(@Nullable Integer root) {
         this.root = root;
     }

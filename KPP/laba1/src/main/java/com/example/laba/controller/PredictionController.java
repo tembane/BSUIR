@@ -11,25 +11,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-
 public class PredictionController {
-
     int tmp_number;
-
     public int getTmp_number() {
         return tmp_number;
     }
     public void setTmp_number(int tmp_number) {
         this.tmp_number = tmp_number;
     }
-
+    private Counter count = new Counter();
     @GetMapping("/prediction")
     public ResponseEntity<Object> prediction(@RequestParam(value = "number", defaultValue = "0") String numb) {
         int number;
         String answer;
-
+        count.incrCount();
         if (numb.matches("[-+]?\\d+")){
-
             number = Integer.parseInt(numb);
             this.tmp_number = number;
             if(number < 0){
