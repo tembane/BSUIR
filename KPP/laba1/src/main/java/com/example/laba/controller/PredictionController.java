@@ -1,14 +1,18 @@
 package com.example.laba.controller;
 
-import com.example.laba.calculations.Solution;
-import com.example.laba.calculations.Parameters;
+import com.example.laba.calculations.CalculationsPrediction;
+import com.example.laba.calculations.PredictionParameters;
 import com.example.laba.cache.Cache;
 import com.example.laba.exceptions.ServiceException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+
 
 @RestController
 public class PredictionController {
@@ -20,6 +24,8 @@ public class PredictionController {
         this.tmp_number = tmp_number;
     }
     private Counter count = new Counter();
+    private CalculationsPrediction calculationsPrediction = new CalculationsPrediction();
+    private static final Logger logger = LogManager.getLogger(PredictionController.class);
     @GetMapping("/prediction")
     public ResponseEntity<Object> prediction(@RequestParam(value = "number", defaultValue = "0") String numb) {
         int number;
@@ -38,7 +44,7 @@ public class PredictionController {
             throw new ServiceException("Wrong value. Enter integer, not a string!");
         }
 
-        var solution = new Solution(new Parameters(number, 0));
+        var solution = new CalculationsPrediction(new PredictionParameters(number, 0));
         solution.calculateRoot();
         if (solution.getRoot() == 1)
             answer = "Вы угадали число!";
@@ -51,5 +57,11 @@ public class PredictionController {
     @GetMapping("/cache")
     public ResponseEntity<String> printCache() {
         return new ResponseEntity<>(Cache.getStaticStringCache(), HttpStatus.OK);
+    }
+
+
+    @PostMapping(value = "/findMax", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity findMaxValue(@RequestBody String[] array) {
+        return new ResponseEntity<>(calculationsPrediction.findMaxValue(array), HttpStatus.OK);
     }
 }

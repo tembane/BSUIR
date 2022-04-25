@@ -1,5 +1,10 @@
 package com.example.laba.calculations;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
 import com.example.laba.SpringConfig;
 import com.example.laba.cache.Cache;
 import com.example.laba.logger.ProgramLogger;
@@ -7,22 +12,23 @@ import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-public class Solution {
+public class CalculationsPrediction {
 
     private final Cache cache;
 
-    private final Parameters parameters;
+    private PredictionParameters parameters;
 
     private Integer root;
 
-    public Solution(Parameters params) {
+    private int random_number;
+
+    public CalculationsPrediction(PredictionParameters params) {
         var context = new AnnotationConfigApplicationContext(SpringConfig.class);
         cache = context.getBean("cache", Cache.class);
         context.close();
 
         this.parameters = params;
     }
-    private int random_number;
 
     public void calculateRoot() {
         //int random_number;
@@ -57,5 +63,14 @@ public class Solution {
     public void setRoot(@Nullable Integer root) {
         this.root = root;
     }
+    public OptionalInt findMaxValue(String[] arr){
+        IntStream steam = Stream.of(arr).mapToInt(Integer::parseInt);
+        return steam.filter(x -> x>0).max();
+    }
 
+    public CalculationsPrediction() {
+        var context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        cache = context.getBean("cache", Cache.class);
+        context.close();
+    }
 }

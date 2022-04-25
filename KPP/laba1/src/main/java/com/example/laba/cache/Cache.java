@@ -1,6 +1,6 @@
 package com.example.laba.cache;
 
-import com.example.laba.calculations.Parameters;
+import com.example.laba.calculations.PredictionParameters;
 import com.example.laba.logger.ProgramLogger;
 
 import org.apache.logging.log4j.Level;
@@ -13,16 +13,16 @@ import java.util.Map;
 
 public class Cache {
 
-    private static final Map<Parameters, Integer> solutions = new HashMap<>();
+    private static final Map<PredictionParameters, Integer> solutions = new HashMap<>();
 
-    public void add(@NotNull Parameters params, @NotNull Integer root) {
+    public void add(@NotNull PredictionParameters params, @NotNull Integer root) {
         if (!solutions.containsKey(params)) {
             solutions.put(params, root);
             ProgramLogger.log(Level.INFO, "Value " + params + "@" + root + " added to cache!");
         }
     }
 
-    public @Nullable Integer find(@NotNull Parameters params) {
+    public @Nullable Integer find(@NotNull PredictionParameters params) {
         if (solutions.containsKey(params))
             return solutions.get(params);
 
@@ -41,7 +41,7 @@ public class Cache {
     }
 
     @Contract(pure = true)
-    public Map<Parameters, Integer> getSolutions() {
+    public Map<PredictionParameters, Integer> getSolutions() {
         return solutions;
     }
 }

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.Nullable;
 import java.util.Objects;
 
-public class Parameters {
+public class PredictionParameters {
 
     // Method equals() overriding
     @Override
@@ -16,7 +16,7 @@ public class Parameters {
         if (obj == null || obj.getClass() != this.getClass())
             return false;
 
-        Parameters params = (Parameters) obj;
+        PredictionParameters params = (PredictionParameters) obj;
 
         return  Objects.equals(enteredValue,  params.enteredValue)  &&
                 Objects.equals(randomValue, params.randomValue);
@@ -33,7 +33,7 @@ public class Parameters {
     private @Nullable Integer randomValue;
 
 
-    public Parameters(
+    public PredictionParameters(
             @Nullable Integer firstValue,
             @Nullable Integer secondValue
     ) {
