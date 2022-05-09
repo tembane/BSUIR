@@ -4,6 +4,8 @@ import com.example.laba.calculations.CalculationsPrediction;
 import com.example.laba.calculations.PredictionParameters;
 import com.example.laba.cache.Cache;
 import com.example.laba.exceptions.ServiceException;
+import com.example.laba.stat.StatProv;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,24 +25,30 @@ public class PredictionController {
     public void setTmp_number(int tmp_number) {
         this.tmp_number = tmp_number;
     }
-    private Counter count = new Counter();
+    private CountController count = new CountController();
     private CalculationsPrediction calculationsPrediction = new CalculationsPrediction();
     private static final Logger logger = LogManager.getLogger(PredictionController.class);
+    private StatProv statProv = new StatProv();
+
+
     @GetMapping("/prediction")
     public ResponseEntity<Object> prediction(@RequestParam(value = "number", defaultValue = "0") String numb) {
         int number;
         String answer;
-        count.incrCount();
+        count.incCount();
         if (numb.matches("[-+]?\\d+")){
             number = Integer.parseInt(numb);
             this.tmp_number = number;
             if(number < 0){
+                statProv.increaseWrongRequests();
                 throw new ServiceException("Wrong value. Enter positive number, not a negative one!");
             }
             if(number > 10){
+                statProv.increaseWrongRequests();
                 throw new ServiceException("Wrong value. Enter number less 10!");
             }
         } else {
+            statProv.increaseWrongRequests();
             throw new ServiceException("Wrong value. Enter integer, not a string!");
         }
 
