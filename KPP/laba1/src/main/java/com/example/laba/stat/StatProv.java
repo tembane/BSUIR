@@ -5,6 +5,8 @@ import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,26 +16,16 @@ import java.util.stream.Collectors;
 
 @Service
 public class StatProv{
-
+    public static Statistics statistics = new Statistics();
     private static List<Integer> roots = new ArrayList<>();
-
-    private Statistics statistics;
-
     private static boolean shouldBeRecalculated = true;
-
-    @Autowired
-    public void setStats(Statistics stats) {
-        this.statistics = stats;
-    }
 
     public Statistics getStats() {
         return statistics;
     }
-
     public void increaseTotalRequests() {
         statistics.totalReq++;
     }
-
     public void increaseWrongRequests() {
         statistics.totalWrongReq++;
     }
@@ -61,12 +53,12 @@ public class StatProv{
 
             statistics.minValue = roots
                     .stream()
-                    .min(Comparator.comparing(Long::valueOf))
+                    .min(Comparator.comparing(Integer::valueOf))
                     .orElse(0);
 
             statistics.maxValue = roots
                     .stream()
-                    .max(Comparator.comparing(Long::valueOf))
+                    .max(Comparator.comparing(Integer::valueOf))
                     .orElse(0);
 
             ProgramLogger.log(Level.WARN, "Stats recollected!");
@@ -82,4 +74,5 @@ public class StatProv{
         roots.add(root);
         shouldBeRecalculated = true;
     }
+
 }

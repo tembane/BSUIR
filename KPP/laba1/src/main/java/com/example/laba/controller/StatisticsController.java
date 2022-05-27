@@ -16,16 +16,12 @@ import java.util.Map;
 @RestController
 @RequestMapping("/statistics")
 public class StatisticsController {
-    private final StatProv statProv;
-
-    @Autowired
-    public StatisticsController(StatProv statProv) {
-        this.statProv = statProv;
-    }
-
+    public static final StatProv statProv = new StatProv();
+    public StatisticsController(){}
     @GetMapping
     public ResponseEntity<Statistics> getAllStats() {
         statProv.calculate();
         return new ResponseEntity<>(statProv.getStats(), HttpStatus.OK);
     }
+
 }

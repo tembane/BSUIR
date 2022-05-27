@@ -17,7 +17,7 @@ class LabaApplicationTests {
     void testPredictionNumbers(){
         ExecutorService executorService = Executors.newFixedThreadPool(10);
         CountController countController = new CountController();
-        IntStream.range(0, 1000).forEach(count ->executorService.execute(countController::incCount));
+        IntStream.range(0, 10000).forEach(count ->executorService.execute(countController::incCount));
 
         executorService.shutdown();
         try{
@@ -28,9 +28,5 @@ class LabaApplicationTests {
             executorService.shutdownNow();
         }
         assertEquals(10000, countController.getValue(), "Synchronization check");
-/*        predictionController.prediction("4");
-        int result = predictionController.getTmp_number();
-        int expected = 4;
-        assertEquals(expected, result);*/
     }
 }

@@ -22,6 +22,9 @@ public class CountController {
     synchronized public ResponseEntity counter (){
         return ResponseEntity.ok().body(count);
     }
+    public int getCount(){
+        return count;
+    }
 }
 
 //responseEntity;

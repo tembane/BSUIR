@@ -28,26 +28,29 @@ public class PredictionController {
     private CountController count = new CountController();
     private CalculationsPrediction calculationsPrediction = new CalculationsPrediction();
     private static final Logger logger = LogManager.getLogger(PredictionController.class);
+    private StatisticsController statisticsController = new StatisticsController();
     private StatProv statProv = new StatProv();
-
 
     @GetMapping("/prediction")
     public ResponseEntity<Object> prediction(@RequestParam(value = "number", defaultValue = "0") String numb) {
-        int number;
+        int number = 0;
         String answer;
         count.incCount();
         if (numb.matches("[-+]?\\d+")){
             number = Integer.parseInt(numb);
             this.tmp_number = number;
             if(number < 0){
+                statProv.increaseTotalRequests();
                 statProv.increaseWrongRequests();
                 throw new ServiceException("Wrong value. Enter positive number, not a negative one!");
             }
             if(number > 10){
+                statProv.increaseTotalRequests();
                 statProv.increaseWrongRequests();
                 throw new ServiceException("Wrong value. Enter number less 10!");
             }
         } else {
+            statProv.increaseTotalRequests();
             statProv.increaseWrongRequests();
             throw new ServiceException("Wrong value. Enter integer, not a string!");
         }
@@ -59,6 +62,8 @@ public class PredictionController {
         else
             answer = "Вы не угадали число. Загаданное число было: " + solution.getNumb();
 
+        statProv.increaseTotalRequests();
+        statProv.addRoot(number);
         return new ResponseEntity<>(answer, HttpStatus.OK);
     }
 

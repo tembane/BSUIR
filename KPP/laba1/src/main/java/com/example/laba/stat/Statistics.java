@@ -6,11 +6,16 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 public class Statistics {
-    protected Integer totalReq = 0;
-    protected Integer totalWrongReq = 0;
-
-    protected Integer minValue = 0;
-    protected Integer maxValue = 0;
-    protected Integer mostCommonValue = 0;
-
+    public Statistics(){
+        totalReq = 0;
+        totalWrongReq = 0;
+        minValue = 0;
+        maxValue = 0;
+        mostCommonValue = 0;
+    }
+    public Integer totalReq;
+    public Integer totalWrongReq;
+    public Integer minValue;
+    public Integer maxValue;
+    public Integer mostCommonValue;
 }

@@ -5,6 +5,8 @@ import java.util.Random;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+
+import com.example.laba.stat.StatProv;
 import com.example.laba.SpringConfig;
 import com.example.laba.cache.Cache;
 import com.example.laba.logger.ProgramLogger;
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class CalculationsPrediction {
 
+    private final StatProv statProv = new StatProv();
     private final Cache cache;
 
     private PredictionParameters parameters;
@@ -31,7 +34,6 @@ public class CalculationsPrediction {
     }
 
     public void calculateRoot() {
-        //int random_number;
         int max = 10;
         Random random = new Random();
         random_number = random.nextInt(max);
@@ -40,7 +42,6 @@ public class CalculationsPrediction {
         var temp = cache.find(parameters);
         if (temp != null) {
             ProgramLogger.log(Level.WARN, "Value found in cache!");
-            setRoot(temp);
 
             return;
         }
